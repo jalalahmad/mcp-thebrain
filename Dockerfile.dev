@@ -1,0 +1,36 @@
+FROM node:18-alpine
+
+# Install build dependencies
+RUN apk add --no-cache python3 g++ make
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev)
+RUN npm install
+
+# Install ts-node and typescript globally for development
+RUN npm install -g ts-node typescript nodemon
+
+# Copy TypeScript config
+COPY tsconfig.json ./
+COPY tsconfig.dev.json ./
+COPY nodemon.json ./
+
+# Copy source files (these will be overridden by volume mount)
+COPY src ./src
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Environment variables
+ENV NODE_ENV=development
+
+# Expose port for HTTP mode and debugging
+EXPOSE 3000 9229
+
+# Command to run in development
+CMD ["npm", "run", "dev"]

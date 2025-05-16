@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  thebrain-mcp-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: thebrain-mcp-dev
+    image: thebrain-mcp:dev
+    volumes:
+      - ./src:/app/src
+      - ./logs:/app/logs
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./nodemon.json:/app/nodemon.json
+    environment:
+      - NODE_ENV=development
+      - LOG_LEVEL=debug
+      - THEBRAIN_API_KEY=${THEBRAIN_API_KEY:-test-api-key-12345}
+      - THEBRAIN_API_URL=${THEBRAIN_API_URL:-https://api.bra.in}
+      - TRANSPORT_TYPE=${TRANSPORT_TYPE:-http}
+      - HTTP_PORT=${HTTP_PORT:-3000}
+      - HTTP_HOST=${HTTP_HOST:-0.0.0.0}
+      - BASE_PATH=${BASE_PATH:-/api/v1}
+      - AUTH_TYPE=${AUTH_TYPE:-api-key}
+    ports:
+      - "3000:3000"
+      - "9229:9229"  # Debug port
+    stdin_open: true
+    tty: true
+    networks:
+      - thebrain-net
+
+networks:
+  thebrain-net:
+    driver: bridge

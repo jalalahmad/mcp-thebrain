@@ -1,0 +1,49 @@
+services:
+  thebrain-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: thebrain-mcp-server
+    image: thebrain-mcp:latest
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - THEBRAIN_API_KEY=${THEBRAIN_API_KEY}
+      - THEBRAIN_API_URL=${THEBRAIN_API_URL:-https://api.bra.in}
+      - TRANSPORT_TYPE=${TRANSPORT_TYPE:-http}
+      - HTTP_PORT=${HTTP_PORT:-3000}
+      - HTTP_HOST=${HTTP_HOST:-0.0.0.0}
+      - BASE_PATH=${BASE_PATH:-/api/v1}
+      - AUTH_TYPE=${AUTH_TYPE:-api-key}
+      # OAuth Configuration (if needed)
+      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - OAUTH_REDIRECT_URI=${OAUTH_REDIRECT_URI}
+      - OAUTH_AUTH_ENDPOINT=${OAUTH_AUTH_ENDPOINT}
+      - OAUTH_TOKEN_ENDPOINT=${OAUTH_TOKEN_ENDPOINT}
+      - OAUTH_SCOPE=${OAUTH_SCOPE}
+      - OAUTH_ALLOWED_CLIENTS=${OAUTH_ALLOWED_CLIENTS}
+    volumes:
+      - ./logs:/app/logs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    stdin_open: true
+    tty: true
+    ports:
+      - "${HTTP_PORT:-3000}:${HTTP_PORT:-3000}"
+    networks:
+      - thebrain-net
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/v1/info', (res) => { process.exit(res.statusCode === 200 ? 0 : 1); })"]
+      interval: 30s
+      timeout: 3s
+      start_period: 5s
+      retries: 3
+
+networks:
+  thebrain-net:
+    driver: bridge
+
+volumes:
+  logs:
+    driver: local
