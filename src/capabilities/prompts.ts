@@ -1,12 +1,12 @@
 import { Prompt } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
-import { TheBrainClient } from '../thebrain/client.js';
+import { TheBrainClient } from '../thebrain/index.js';
 import logger from '../utils/logger';
 
 export class TheBrainPromptProvider {
-  private client: TheBrainClient;
+  private client: any;
   
-  constructor(client: TheBrainClient) {
+  constructor(client: any) {
     this.client = client;
   }
   

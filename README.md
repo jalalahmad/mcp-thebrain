@@ -2,6 +2,13 @@
 
 An implementation of the Model Context Protocol (MCP) server that exposes TheBrain's knowledge management functionality to AI assistants.
 
+## Documentation
+
+- [API Reference](./THEBRAIN_API_REFERENCE.md) - Complete API endpoint documentation
+- [Implementation Status](./IMPLEMENTATION_PLAN.md) - Current implementation status and roadmap
+- [API Schema Comparison](./API_SCHEMA_COMPARISON.md) - Schema differences and updates needed
+- [Attachment API Guide](./ATTACHMENT_API_IMPLEMENTATION.md) - Attachment operations documentation
+
 ## Features
 
 - 🧠 **TheBrain Integration**: Full API integration with TheBrain for managing thoughts, links, and relationships
@@ -198,6 +205,69 @@ The server includes advanced features for production deployments:
 - **Enhanced Error Handling**: User-friendly errors with correlation IDs
 
 See [ADVANCED_FEATURES.md](ADVANCED_FEATURES.md) for detailed documentation on these features.
+
+## Available Tools
+
+The server provides comprehensive tools for interacting with TheBrain:
+
+### Core Operations
+- **list_brains**: List all brains in the user's account
+- **create_thought**: Create a new thought with optional parent connection
+- **update_thought**: Update an existing thought
+- **delete_thought**: Delete a thought from the brain
+- **create_link**: Create a link between two thoughts
+- **create_bulk_thoughts**: Create multiple thoughts and relationships in a single operation
+
+### Tag & Type Management
+- **get_tags**: Get all tags in a brain
+- **add_tags_to_thought**: Add tags to a thought
+- **remove_tags_from_thought**: Remove tags from a thought
+- **get_types**: Get all types in a brain
+
+### Notes Management
+- **get_notes**: Get notes for a thought in various formats (Markdown, HTML, text)
+- **update_notes**: Update notes for a thought
+- **append_notes**: Append content to existing notes
+
+### Search & Navigation
+- **search_advanced**: Advanced search with filters (by type, tag, date range)
+- **get_thought_relationships**: Get all relationships for a thought (parents, children, siblings, jumps)
+
+### Attachments
+- **get_thought_attachments**: Get all attachments for a thought
+- **create_attachment**: Create a new file attachment
+- **create_url_attachment**: Create a URL attachment
+
+### Analytics
+- **get_brain_statistics**: Get comprehensive brain statistics
+
+See [TOOLS.md](TOOLS.md) for detailed tool documentation and usage examples.
+
+## Available Resources
+
+The server exposes the following resources for AI-assisted navigation:
+
+### Basic Resources
+- `thebrain://brains` - List of all available brains
+- `thebrain://brains/{brainId}/thoughts/{thoughtId}` - Specific thought details
+- `thebrain://brains/{brainId}/search?q={query}` - Search results
+
+### Relationship Resources
+- `thebrain://brains/{brainId}/thoughts/{thoughtId}/children` - Child thoughts
+- `thebrain://brains/{brainId}/thoughts/{thoughtId}/parents` - Parent thoughts
+- `thebrain://brains/{brainId}/thoughts/{thoughtId}/siblings` - Sibling thoughts
+
+### Metadata Resources
+- `thebrain://brains/{brainId}/tags` - All tags in a brain
+- `thebrain://brains/{brainId}/types` - All types in a brain
+- `thebrain://brains/{brainId}/statistics` - Brain statistics
+
+### Content Resources
+- `thebrain://brains/{brainId}/thoughts/{thoughtId}/notes` - Thought notes
+- `thebrain://brains/{brainId}/thoughts/{thoughtId}/attachments` - Thought attachments
+- `thebrain://brains/{brainId}/thoughts/{thoughtId}/graph` - Thought relationship graph
+
+See [RESOURCES.md](RESOURCES.md) for detailed resource documentation and formats.
 
 ## Development
 

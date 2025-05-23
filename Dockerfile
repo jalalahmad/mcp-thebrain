@@ -30,14 +30,28 @@ RUN adduser -S nodejs -u 1001
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-
-# Install production dependencies only
-RUN npm ci --only=production && npm cache clean --force
+# Copy the rest of the application
+COPY . .
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist ./dist
+
+# Copy all package.json first to take advantage of Docker caching
+COPY package*.json ./
+
+# Install production dependencies
+RUN npm ci --only=production && npm cache clean --force
+
+# Get the source of thebrain-api package
+RUN npm install thebrain-api
+
+# Create special version of thebrain-api with type:commonjs
+RUN cd node_modules/thebrain-api && \
+    sed -i 's/"type": "module"/"type": "commonjs"/g' package.json && \
+    cd ../../
+
+# Make sure we own all dependencies
+RUN chown -R root:root node_modules
 
 # Create logs directory
 RUN mkdir -p logs && chown -R nodejs:nodejs logs

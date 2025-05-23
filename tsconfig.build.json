@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/index.ts",
+    "src/thebrain/adapter.ts",
+    "src/thebrain/index.ts",
+    "src/capabilities/resources.ts",
+    "src/capabilities/tools.ts",
+    "src/auth/**/*",
+    "src/utils/**/*",
+    "src/monitoring/**/*",
+    "src/transport.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/**/*.test.ts",
+    "src/**/__tests__/**/*",
+    "src/generated/**/*",
+    "src/thebrain/client.ts"
+  ]
+}

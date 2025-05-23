@@ -58,6 +58,9 @@ describe('TransportManager', () => {
 
   describe('Configuration', () => {
     it('should load default configuration', () => {
+      // Clear environment variable to test true defaults
+      delete process.env.TRANSPORT_TYPE;
+      
       transportManager = new TransportManager(server);
       const config = transportManager.getConfig();
       
@@ -91,6 +94,8 @@ describe('TransportManager', () => {
 
   describe('Stdio Transport', () => {
     beforeEach(() => {
+      // Set to stdio for these tests
+      delete process.env.TRANSPORT_TYPE;
       transportManager = new TransportManager(server);
     });
 
@@ -206,6 +211,7 @@ describe('TransportManager', () => {
 
   describe('Shutdown', () => {
     it('should stop stdio transport', async () => {
+      delete process.env.TRANSPORT_TYPE;
       transportManager = new TransportManager(server);
       await transportManager.start();
       await transportManager.stop();

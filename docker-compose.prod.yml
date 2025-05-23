@@ -11,7 +11,7 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-info}
       - THEBRAIN_API_KEY=${THEBRAIN_API_KEY}
       - THEBRAIN_API_URL=${THEBRAIN_API_URL:-https://api.bra.in}
-      - TRANSPORT_TYPE=${TRANSPORT_TYPE:-http}
+      - TRANSPORT_TYPE=${TRANSPORT_TYPE:-stdio}
       - HTTP_PORT=${HTTP_PORT:-3000}
       - HTTP_HOST=${HTTP_HOST:-0.0.0.0}
       - BASE_PATH=${BASE_PATH:-/api/v1}

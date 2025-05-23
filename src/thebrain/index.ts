@@ -1,23 +1,14 @@
-// Re-export all types and functions from the client
+// Re-export client from adapter (which wraps thebrain-api package)
+export { TheBrainClient } from './adapter';
+
+// Re-export types
 export {
-  // Client and factory
-  TheBrainClient,
-  createTheBrainClient,
-  
-  // Configuration
-  TheBrainConfig,
-  
-  // Types
-  Brain,
-  Thought,
-  ThoughtType,
-  Link,
-  LinkType,
-  SearchResult,
-  
-  // Request interfaces
-  CreateThoughtRequest,
-  UpdateThoughtRequest,
-  CreateLinkRequest,
-  SearchRequest,
-} from './client';
+  type Thought,
+  type Link,
+  type Brain,
+  type Attachment,
+  type SearchResult,
+  type BrainStatistics,
+  type ThoughtGraph,
+  type Note,
+} from './adapter';

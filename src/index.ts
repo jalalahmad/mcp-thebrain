@@ -10,7 +10,7 @@ import {
 import { z } from 'zod';
 import logger from './utils/logger';
 import { handleError } from './utils/error-handler';
-import { TheBrainClient } from './thebrain/client';
+import { TheBrainClient } from './thebrain';
 import { 
   TheBrainResourceProvider,
   TheBrainToolProvider,
@@ -60,10 +60,7 @@ async function initializeServer() {
       throw new Error('THEBRAIN_API_KEY environment variable is required');
     }
     
-    const client = new TheBrainClient({
-      apiKey,
-      baseUrl: apiUrl
-    });
+    const client = new TheBrainClient(apiUrl, apiKey);
     
     // Initialize providers
     const resourceProvider = new TheBrainResourceProvider(client);
@@ -88,11 +85,8 @@ async function initializeServer() {
     server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const { name, arguments: args } = request.params;
       return await toolProvider.callTool({
-        method: 'tools/call',
-        params: {
-          name,
-          ...(args && { arguments: args })
-        }
+        name,
+        arguments: args || {}
       });
     });
     

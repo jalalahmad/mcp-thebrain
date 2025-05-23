@@ -1,8 +1,8 @@
 import { TheBrainPromptProvider } from '../prompts';
-import { TheBrainClient } from '../../thebrain/client';
+import { TheBrainClient } from '../../thebrain';
 
 // Mock dependencies
-jest.mock('../../thebrain/client');
+jest.mock('../../thebrain');
 jest.mock('../../utils/logger');
 
 describe('TheBrainPromptProvider', () => {
@@ -11,7 +11,7 @@ describe('TheBrainPromptProvider', () => {
   
   beforeEach(() => {
     jest.clearAllMocks();
-    mockClient = new TheBrainClient({ apiKey: 'test-key' }) as jest.Mocked<TheBrainClient>;
+    mockClient = new TheBrainClient('https://api.bra.in', 'test-key') as jest.Mocked<TheBrainClient>;
     promptProvider = new TheBrainPromptProvider(mockClient);
   });
   

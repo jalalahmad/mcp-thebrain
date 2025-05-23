@@ -9,7 +9,7 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Check if docker-compose is installed
-if ! command -v docker-compose &> /dev/null; then
+if ! command -v docker compose &> /dev/null; then
     echo "Docker Compose is not installed. Please install Docker Compose first."
     exit 1
 fi
@@ -23,8 +23,8 @@ echo "   Transport: $TRANSPORT_TYPE"
 echo "   API Key: ${THEBRAIN_API_KEY:0:10}..."
 
 # Build and start the development container
-docker-compose -f docker-compose.dev.yml up --build
+docker compose -f docker-compose.dev.yml up --build
 
 # Cleanup on exit
 echo "🛑 Stopping TheBrain MCP Server..."
-docker-compose -f docker-compose.dev.yml down
+docker compose -f docker-compose.dev.yml down

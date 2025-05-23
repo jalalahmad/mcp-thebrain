@@ -28,22 +28,37 @@ const format = winston.format.combine(
 );
 
 // Create transports
-const transports: winston.transport[] = [
-  // Console transport
-  new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.simple(),
-      winston.format.printf(({ timestamp, level, message, ...metadata }) => {
-        let msg = `${timestamp} [${level}]: ${message}`;
-        if (Object.keys(metadata).length > 0) {
-          msg += ` ${JSON.stringify(metadata)}`;
-        }
-        return msg;
-      })
-    ),
-  }),
-];
+const transports: winston.transport[] = [];
+
+// Only add console transport if not using stdio (to avoid interfering with MCP protocol)
+if (process.env.TRANSPORT_TYPE !== 'stdio') {
+  transports.push(
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple(),
+        winston.format.printf(({ timestamp, level, message, ...metadata }) => {
+          let msg = `${timestamp} [${level}]: ${message}`;
+          if (Object.keys(metadata).length > 0) {
+            msg += ` ${JSON.stringify(metadata)}`;
+          }
+          return msg;
+        })
+      ),
+    })
+  );
+} else {
+  // For stdio transport, always log to file or use stderr
+  transports.push(
+    new winston.transports.Stream({
+      stream: process.stderr,
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+      ),
+    })
+  );
+}
 
 // Add file transport in production
 if (process.env.NODE_ENV === 'production') {
